@@ -1,0 +1,28 @@
+{
+  "name": "vector",
+  "version": "1.0.0",
+  "description": "A light weight MVC framework for developing web applications / APIs. Based on expressjs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mvc",
+    "web",
+    "application",
+    "apis",
+    "expressjs",
+    "express",
+    "framework",
+    "light",
+    "thin"
+  ],
+  "author": "Rohit <rohhittt@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "lodash": "^4.17.4",
+    "pipo": "^1.0.0",
+    "pug": "^2.0.0-beta11"
+  }
+}

@@ -1,0 +1,13 @@
+var Spartan = require('../controllers/vector-base');
+
+class PackageController extends Spartan {
+	index( reply, error, req, res ) {
+		reply({c: 'package', a: 'index'});
+	}
+
+	show( reply, error, req, res ) {
+		reply({radhika: 'garg'});
+	}
+}
+
+module.exports = PackageController;
