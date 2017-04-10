@@ -1,0 +1,23 @@
+const chalk = require('chalk');
+const createFile = chalk.bold.green;
+
+var _ = require('lodash');
+var package = require('../../package');
+var fs = require('fs');
+var pug = require('pug');
+
+module.exports = {
+	generate: ( writePath, scopeVars ) => {
+		debugger
+		fs.writeFile(writePath, pug.compileFile('generators/controller/template.pug')(Object.assign({
+			package: package,
+			_:_
+		}, scopeVars)), 'utf-8', (error, success) => {
+			if(error) {
+				console.error(error);
+			} else {
+				console.info(createFile('Created Controller'), ` \t ${writePath}`);	
+			}
+		});
+	}
+}

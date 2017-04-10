@@ -1,0 +1,17 @@
+- var packageName = _.capitalize(package.name);
+- var baseControllerName = `${packageName}Base`;
+- var controllerClassName = `${_.capitalize(controller.name)}Controller`;
+|var #{baseControllerName} = require('../controllers/base');
+|
+|class #{controllerClassName} extends #{baseControllerName} {
+|
+each action in actions
+	|
+	|	#{action}( reply, error, req, res ) {
+	|		reply({controller: '#{controller.name}', action: '#{action}'});
+	|	}
+	|
+|
+|}
+|
+|module.exports = #{controllerClassName};

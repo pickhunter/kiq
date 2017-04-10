@@ -1,6 +1,6 @@
 var ActionPipeline = require('../pipelines/action-pipeline');
 
-class SpartanController {
+class BaseController {
 
 	constructor() {
 		this._beforeActions = [];
@@ -47,4 +47,4 @@ class SpartanController {
 	}
 }
 
-module.exports = SpartanController;
+module.exports = BaseController;
