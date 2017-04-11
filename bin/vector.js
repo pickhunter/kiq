@@ -7,7 +7,8 @@ const prog = require('caporal');
 
 prog
 	.version(package.version)
-	.description(package.description)
+	.description(package.description);
+prog
 	.command('gen controller', 'Generate a controller')
 	.argument('<controllerName>', 'Controller Name')
 	.argument('[actionNames...]', 'Actions')
@@ -27,5 +28,11 @@ prog
 			actions: actions
 		});
 	});
+
+	prog
+		.command('gen routes', 'Generate a basic route file')
+		.action(function(args, options, logger) {
+			require('../generators/routes/file').generate(`generated/routes.js`, null);
+		});
 
 prog.parse(process.argv);
