@@ -35,4 +35,14 @@ prog
 			require('../generators/routes/file').generate(`generated/routes.js`, null);
 		});
 
+	prog
+		.command('add route', 'Add a route')
+		.argument('<method>', 'Method Name')
+		.argument('<path>', 'Path')
+		.argument('<controller>', 'Controller Name')
+		.argument('<action>', 'Action Name')
+		.action(function(args, options, logger) {
+			require('../updaters/routes').update(`generated/routes.js`, args);
+		});
+
 prog.parse(process.argv);
