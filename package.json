@@ -23,13 +23,16 @@
   "author": "Rohit <rohhittt@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "caporal": "^0.4.1",
     "chalk": "^1.1.3",
     "commander": "^2.9.0",
     "express": "^4.15.2",
+    "express-generator": "^4.15.0",
+    "fs-extra": "^2.1.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "pipo": "^1.0.0",
+    "pipo": "^1.0.1",
     "pug": "^2.0.0-beta11"
   }
 }

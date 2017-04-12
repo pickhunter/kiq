@@ -5,7 +5,7 @@ const routesFilePath = '../../generated/routes.js';
 var makeRouteConfigStatement = ( config ) => {
 	if( !config || !( config.path && config.controller && config.action && config.method )) {
 		var error = 'Invalid Options. Cant create route';
-		console.log(error, config);
+		console.log(chalk.red(error, 'with'), config);
 		throw error;
 	}
 
@@ -18,6 +18,8 @@ module.exports = {
 		var lineNumber = _.findIndex(data, line => /\(router\) => {$/.test(line));
 		var routingStatements = _.flatten([routeConfigs]).map(makeRouteConfigStatement);
 
+		debugger
+
 		routingStatements.forEach(statement => {
 			data.splice(lineNumber + 1, 0, statement);
 		});
@@ -26,7 +28,7 @@ module.exports = {
 
 		fs.writeFile(filePath, text, function (err) {
 		  if (err) return console.log(chalk.bold.red(err));
-		  return console.log(chalk.bold.green('Update Routes'), `\t${filePath}`);
+		  return console.log(chalk.green('Updated Routes'), `\t${filePath}`);
 		});
 	}
 };
