@@ -35,7 +35,7 @@ module.exports = {
 				Bluebird.all(_.map(dirs, dir => Ensurers.directory.ensure(dir)))
 					.then(() => {
 						var controllerName = _.capitalize(vars.package.name);
-
+						debugger
 						Bluebird.all([
 							Generators.packageJson.generate(`${dirs.app}/package.json`, {
 								app: {
@@ -72,8 +72,11 @@ module.exports = {
 							Generators.envs.test.generate(`${dirs.envConfig}/test.js`),
 							Generators.envs.staging.generate(`${dirs.envConfig}/staging.js`),
 							Generators.envs.production.generate(`${dirs.envConfig}/production.js`),
+
+							Generators.config.base.generate(`${dirs.config}/base.js`),
+							Generators.config.root.generate(`${dirs.config}/index.js`),
 							
-							// Generators.app.generate(`${dirs.app}/app.js`)
+							Generators.app.generate(`${dirs.app}/app.js`)
 								
 						]).then(() => {
 							require('shelljs').cd(appRootDir);

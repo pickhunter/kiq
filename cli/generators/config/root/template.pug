@@ -1,0 +1,7 @@
+|// Entire Configuration for the #{packageName} App
+|
+include ../../../includes/info.pug
+
+|var baseConfig = require('./base');
+
+|module.exports = Object.assign(baseConfig, require(`./${process.env.NODE_ENV || 'development'}`));

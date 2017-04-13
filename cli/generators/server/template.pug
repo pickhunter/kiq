@@ -2,8 +2,8 @@
 |
 include ../../includes/info.pug
 
-|const #{package.name} = require('#{package.name}');
-|const config = require('./config');
+|const #{packageName} = require('#{package.name}');
+|const app = require('./app');
 |
 |
-|#{package.name}.start(config);
+|#{packageName}.start(app);

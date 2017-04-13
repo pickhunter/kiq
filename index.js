@@ -5,5 +5,8 @@ module.exports = {
 	controllers: dirToModuleConverter.toModule(`${__dirname}/controllers`)
 	start: ( config ) => {
 		return server.start(config);
+	},
+	App: function( config ) {
+		this.config = config;
 	}
 };
