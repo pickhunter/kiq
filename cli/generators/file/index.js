@@ -16,7 +16,8 @@ module.exports = {
 		(Object.assign({
 			package: package,
 			_:_,
-			moment: moment
+			moment: moment,
+			packageName: _.capitalize(package.name)
 		}, normalizedOptions.template.scope)), 'utf-8')
 		.then(() => {
 			console.info(chalk.green(normalizedOptions.creationMessage), ` \t ${writePath}`);
