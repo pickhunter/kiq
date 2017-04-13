@@ -1,10 +1,16 @@
-var ActionPipeline = require('../pipelines/action-pipeline');
+var ActionPipeline = require('../actions/pipeline');
+var Filter = require('../actions/filter');
 
 class BaseController {
 
 	constructor() {
 		this._beforeActions = [];
 		this._afterActions = [];
+		this.initialize();
+	}
+
+	initialize() {
+
 	}
 
 	beforeAction( fn, options ) {
@@ -35,13 +41,13 @@ class BaseController {
 
 		this.preFilters
 			.filter(filter => filter.shouldRun(actionName))
-			.forEach(pipeline.addFilter);
+			.forEach(filter => pipeline.addFilter(filter.fn));
 
 		pipeline.addFilter(actionFn);
 
 		this.postFilters
 			.filter(filter => filter.shouldRun(actionName))
-			.forEach(pipeline.addFilter);
+			.forEach(filter => pipeline.addPostFilter(filter.fn));
 
 		return pipeline;
 	}
