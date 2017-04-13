@@ -1,13 +1,18 @@
 const _ = require('lodash');
 const fse = require('fs-extra');
+const path = require('path');
 
 module.exports = {
-	toModule: ( path ) => {
+	toModule: ( srcpath ) => {
 		var module = {};
-
-		_.reject(fse.readdirSync(path), name => _.startsWith(name, '.') || name == 'index.js')
+		
+		debugger
+		fse.readdirSync(srcpath)
+			.filter(name => _.endsWith(name, '.js') || !_.startsWith(name, '.') && name !== 'index.js')
 			.forEach((dir) => {
-				module[_.camelCase(dir)] = require(`${path}/${dir}`)
+				debugger
+				var name = _.endsWith(dir, '.js') ? dir.split('.js')[0] : dir;
+				module[_.camelCase(name)] = require(`${srcpath}/${dir}`)
 			});
 
 		return module;

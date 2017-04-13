@@ -1,5 +1,5 @@
 {
-  "name": "vector",
+  "name": "kiq",
   "version": "1.0.0",
   "description": "A light weight MVC framework for developing web applications / APIs. Based on expressjs.",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "vector": "./bin/vector.js"
+    "kiq": "./bin/kiq.js"
   },
   "keywords": [
     "mvc",
@@ -33,6 +33,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "pipo": "^1.0.1",
-    "pug": "^2.0.0-beta11"
+    "pug": "^2.0.0-beta11",
+    "shelljs": "^0.7.7"
   }
 }
