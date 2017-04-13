@@ -6,4 +6,12 @@ include ../../includes/info.pug
 |const app = require('./app');
 |
 |
-|#{packageName}.start(app);
+|var server = #{packageName}.start(app, process.argv[2]);
+|
+|server.on('listening', () => {
+|  var addr = server.address();
+|  var bind = typeof addr === 'string'
+|    ? 'pipe ' + addr
+|    : 'port ' + addr.port;
+|  console.log('Listening on ' + bind);
+|});

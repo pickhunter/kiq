@@ -4,8 +4,6 @@ include ../../../includes/info.pug
 
 |var #{package.name} = require('#{package.name}');
 |
-|module.exports = {
-|	configure: ( config ) => {
+|module.exports = #{package.name}.configure(( config ) => {
 |
-|	}
-|};
+|});

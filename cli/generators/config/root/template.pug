@@ -2,6 +2,11 @@
 |
 include ../../../includes/info.pug
 
+|var #{packageName} = require('#{package.name}');
+|
 |var baseConfig = require('./base');
 
-|module.exports = Object.assign(baseConfig, require(`./${process.env.NODE_ENV || 'development'}`));
+|module.exports = {
+|	config: Object.assign(baseConfig, require(`./envs/${process.env.NODE_ENV || 'development'}`)),
+|	routes: require('./routes')
+|};
