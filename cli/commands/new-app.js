@@ -73,7 +73,7 @@ module.exports = {
 							Generators.envs.staging.generate(`${dirs.envConfig}/staging.js`),
 							Generators.envs.production.generate(`${dirs.envConfig}/production.js`),
 							
-							Generators.app.generate(`${dirs.app}/app.js`)
+							// Generators.app.generate(`${dirs.app}/app.js`)
 								
 						]).then(() => {
 							require('shelljs').cd(appRootDir);
