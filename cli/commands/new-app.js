@@ -24,6 +24,7 @@ module.exports = {
 					app: appRootDir,
 					controllers: `${appRootDir}/controllers`,
 					config: `${appRootDir}/config`,
+					envConfig: `${appRootDir}/config/envs`,
 					middlewares: `${appRootDir}/middlewares`,
 					public: `${appRootDir}/public`,
 					javascripts: `${appRootDir}/public/javascripts`,
@@ -66,6 +67,11 @@ module.exports = {
 									});
 								})
 							,
+
+							Generators.envs.development.generate(`${dirs.envConfig}/development.js`),
+							Generators.envs.test.generate(`${dirs.envConfig}/test.js`),
+							Generators.envs.staging.generate(`${dirs.envConfig}/staging.js`),
+							Generators.envs.production.generate(`${dirs.envConfig}/production.js`),
 							
 							Generators.app.generate(`${dirs.app}/app.js`)
 								
