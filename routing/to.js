@@ -1,5 +1,6 @@
 var chalk = require('chalk');
 var Reflection = require('../helpers/reflection');
+var paths = require('../helpers/paths');
 
 class To {
 	constructor(config) {
@@ -31,7 +32,8 @@ class To {
 	}
 
 	_loadController( controllerName ) {
-		var ctrlDef = require(`../../../controllers/${controllerName}`);
+		var cwd = paths.getCurrentWorkingDirectory();
+		var ctrlDef = require(`${cwd}/controllers/${controllerName}`);
 		if( Reflection.isClassDefinition(ctrlDef) ) {
 			return new ctrlDef;
 		}

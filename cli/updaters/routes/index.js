@@ -2,7 +2,6 @@ const Bluebird = require('bluebird');
 const fse = Bluebird.promisifyAll(require('fs'));
 const _ = require('lodash');
 const chalk = require('chalk');
-const routesFilePath = '../../generated/routes.js';
 
 
 var makeRouteConfigStatement = ( config ) => {
