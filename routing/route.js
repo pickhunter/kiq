@@ -52,7 +52,7 @@ class Route {
 	}
 
 	toString() {
-		return `${this.method.toUpperCase()}\t\t${this.path}\t\t${this._to.toString()}`;
+		return `${this.method.toUpperCase()}\t\t${this.path}(.:format)\t\t${this._to.toString()}`;
 	}
 }
 
