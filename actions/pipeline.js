@@ -37,7 +37,14 @@ class ActionPipeline extends Pipo {
 	error( payload ) {
 		this.halt();
 		this.response.status(500);
-		this.response.send(payload);
+
+		var format = this.request.format;
+
+		if( format == 'json' ) {
+			this.response.json(payload);
+		} else {
+			this.response.send(Pug.renderFile(`views/error.pug`, payload));
+		}
 	}
 
 	start( req, res, next ) {
