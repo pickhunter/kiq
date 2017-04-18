@@ -1,19 +1,34 @@
 var Pipo = require('pipo');
+var Pug = require('pug');
 
 class ActionPipeline extends Pipo {
 
-	constructor() {
+	constructor( route ) {
 		super();
 		this._postActionPipeline = new Pipo();
+		this.route = route;
 	}
 
 	addPostFilter( filter ) {
 		this._postActionPipeline.addFilter(filter);
 	}
 
-	reply( response ) {
+	reply( data ) {
+
+		var controllerName = this.route.controllerName;
+		var actionName = this.route.actionName;
+
 		this.halt();
-		this.res.send(response);
+
+		var json = false;
+		var html = false;
+
+		if( this.req.params.format == 'json' || this.req.xhr && this.this.req.accepts('json') ) {
+			this.res.json(data);
+		} else {
+			this.res.send(Pug.renderFile(`views/${controllerName}/${actionName}.pug`, data));
+		}
+
 		this._postActionPipeline.start();
 	}
 

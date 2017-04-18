@@ -17,10 +17,10 @@ var binder = ( expressApp, routes ) => {
 	Router.configureWith(routes);
 
 	lodash.flatten(lodash.map(Router.config, 'routes')).forEach(route => {
-		expressApp[route.method](route.path, ( req, res, next ) => {
+		expressApp[route.method](`${route.path}(.:format)?`, ( req, res, next ) => {
 			try{
 				route.controller
-					.getActionPipeline(route.actionName)
+					.getActionPipeline(route)
 					.start(req, res, next);
 			}
 
