@@ -19,10 +19,11 @@ module.exports = {
 
 			.action(function(args, options, logger) {
 				var appRootDir = `./${args.name}`;
-
+				var templateExtension = 'pug';
 				var dirs = {
 					app: appRootDir,
 					controllers: `${appRootDir}/controllers`,
+					views: `${appRootDir}/views`,
 					config: `${appRootDir}/config`,
 					envConfig: `${appRootDir}/config/envs`,
 					middlewares: `${appRootDir}/middlewares`,
@@ -54,6 +55,13 @@ module.exports = {
 									name: `${controllerName}App`,
 								},
 								actions: ['index']
+							}),
+
+							Ensurers.directory.ensure(`${dirs.views}/${controllerName}`.toLowerCase()).then(() => {
+								Generators.view.generate(`${dirs.views}/${controllerName}/index.${templateExtension}`.toLowerCase(), {
+									controller: controllerName,
+									action: 'index'
+								});
 							}),
 
 							Generators.routes
