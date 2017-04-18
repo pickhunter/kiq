@@ -20,9 +20,6 @@ class ActionPipeline extends Pipo {
 
 		this.halt();
 
-		var json = false;
-		var html = false;
-
 		if( this.req.params.format == 'json' || this.req.xhr && this.this.req.accepts('json') ) {
 			this.res.json(data);
 		} else {
