@@ -36,7 +36,7 @@ module.exports = {
 
 						if(typeof prop == 'function') {
 							return function() {
-								prop.apply(delegationTarget, arguments);
+								return prop.apply(delegationTarget, arguments);
 							}
 						}
 

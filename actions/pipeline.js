@@ -36,8 +36,8 @@ class ActionPipeline extends Pipo {
 
 	error( payload ) {
 		this.halt();
-		this.response.code = 500;
-		this.response.error(payload);
+		this.response.status(500);
+		this.response.send(payload);
 	}
 
 	start( req, res, next ) {

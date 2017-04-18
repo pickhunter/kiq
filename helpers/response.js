@@ -2,9 +2,7 @@ const Reflection = require('./reflection');
 
 class Response {
 	constructor( res ) {
-		this._res = function() {
-			return res;
-		}
+		this._res = res;
 	}
 
 	get code() {
