@@ -1,5 +1,8 @@
-var Pipo = require('pipo');
-var Pug = require('pug');
+const Pipo = require('pipo');
+const Pug = require('pug');
+const Request = require('../helpers/request');
+const Response = require('../helpers/response');
+
 
 class ActionPipeline extends Pipo {
 
@@ -20,10 +23,12 @@ class ActionPipeline extends Pipo {
 
 		this.halt();
 
-		if( this.req.params.format == 'json' || this.req.xhr && this.this.req.accepts('json') ) {
-			this.res.json(data);
+		var format = this.request.format;
+
+		if( format == 'json' ) {
+			this.response.json(data);
 		} else {
-			this.res.send(Pug.renderFile(`views/${controllerName}/${actionName}.pug`, data));
+			this.response.send(Pug.renderFile(`views/${controllerName}/${actionName}.pug`, data));
 		}
 
 		this._postActionPipeline.start();
@@ -31,14 +36,20 @@ class ActionPipeline extends Pipo {
 
 	error( payload ) {
 		this.halt();
-		this.res.code(500).error(payload);
+		this.response.code = 500;
+		this.response.error(payload);
 	}
 
 	start( req, res, next ) {
-		Object.assign(this, { req, res, next });
+		this.request = new Request(req);
+		this.response = new Response(res);
+		this.next = next;
 
-
-		super.start(this._getExternallyCallableFn('reply'), this._getExternallyCallableFn('error'), req, res);
+		super.start(this._getExternallyCallableFn('reply'),
+			this._getExternallyCallableFn('error'),
+			this.request,
+			this.response
+		);
 	}
 
 	_getExternallyCallableFn( fnName ) {
