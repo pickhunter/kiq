@@ -1,6 +1,6 @@
 module.exports = {
 	render: ( viewPath, scope ) => {
-		return scope;
+		return scope.data;
 	},
 
 	extension: 'js'

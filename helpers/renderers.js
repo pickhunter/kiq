@@ -19,11 +19,12 @@ module.exports = {
 
 					  var scope = Object.assign({
 					  	actionName,
-					  	controllerName
+					  	controllerName,
+					  	data
 					  }, {
 					  	request: requestHelper,
-					  	response: responseHelper,
-					  }, data);
+					  	response: responseHelper
+					  });
 
 					  var templatePath = `views/${controllerName}/${actionName}.${engine.extension}`;
 
