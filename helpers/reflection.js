@@ -41,6 +41,11 @@ module.exports = {
 						}
 
 						return prop;
+					},
+
+					set: ( target, property, value, receiver ) => {
+						target[property] = value;
+						return true;
 					}
 				};
 
