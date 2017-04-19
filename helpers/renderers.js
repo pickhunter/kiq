@@ -29,9 +29,12 @@ module.exports = {
 
 					  if( responseHelper.code == 404 ) {
 					  	templatePath = `views/404.${engine.extension}`;
-					  } else if ( responseHelper.code == 500 ) {
-					  	templatePath = `views/500.${engine.extension}`;
-					  } else if(/[4,5][0-9][0-9]/.test(responseHelper.code)) {
+					  }
+					  // else if ( responseHelper.code == 500 ) {
+					  // 	templatePath = `views/500.${engine.extension}`;
+					  // }
+
+					  else if(/[4,5][0-9][0-9]/.test(responseHelper.code)) {
 					  	templatePath = `views/error.${engine.extension}`;
 					  }
 
