@@ -28,7 +28,12 @@ class ActionPipeline extends Pipo {
 		this.response.code = options.status || this.response.code;
 
 		var format = this.request.format;
-		this.renderers[format].render(this.response, data, this.route, this.request);
+		this.renderers[format].render(data, {
+			response: this.response,
+			route: this.route,
+			request: this.request,
+			template: options.template
+		});
 
 		this._postActionPipeline.start();
 		

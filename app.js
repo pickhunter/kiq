@@ -48,7 +48,11 @@ module.exports = {
 		 var request = new Request(req);
 		 var response = new Response(res);
 
-		 kiqApp.renderers[request.format].render(response, err, {}, request);
+		 kiqApp.renderers[request.format].render(err, {
+		 	response: response,
+		 	route: {},
+		 	request: request 
+		 });
 
 		});
 
