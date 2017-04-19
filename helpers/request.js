@@ -25,7 +25,7 @@ class Request {
 var pRequest = Reflection.proxy(Request, {
 	private: ['_req'],
 	delegate: {
-		methods: ['xhr', 'method', 'params', 'query', 'path'],
+		methods: ['xhr', 'method', 'params', 'query', 'path', 'originalUrl'],
 		to: '_req'
 	}
 });

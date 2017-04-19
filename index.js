@@ -1,57 +1,34 @@
 const dirToModuleConverter = require('./helpers/folder-to-module');
 const server = require('./server');
 
-var expressApp = require('./app');
+const _ = require('lodash');
 
-var Router = require('./routing/router');
-var powerdBy = require('./middlewares/powered-by');
-var lodash = require('lodash');
+const App = require('./helpers/app');
 
-var binder = ( expressApp, routes ) => {
-	expressApp.use(powerdBy);
+const ViewEngines = require('./view-engines');
 
-	if( !expressApp ) {
-		throw new Error('Express app missing');
+class Kiq {
+	constructor() {
+
+		this.controllers = dirToModuleConverter.toModule(`${__dirname}/controllers`);
+		this.App = App;
 	}
 
-	Router.configureWith(routes);
+	start( kiqApp, port ) {
 
-	lodash.flatten(lodash.map(Router.config, 'routes')).forEach(route => {
-		expressApp[route.method](`${route.path}(.:format)?`, ( req, res, next ) => {
-			try{
-				route.controller
-					.getActionPipeline(route)
-					.start(req, res, next);
-			}
-
-			catch(e) {
-				console.error(e);
-				throw(e);
-			}
-			
-		});
-	});
-
-};
-
-class App {
-	constructor( config ) {
-		Object.assign(this, config);
-
-		this.expressApp = expressApp.bind(config.routes, binder);
-	}
-}
-
-module.exports = {
-	controllers: dirToModuleConverter.toModule(`${__dirname}/controllers`),
-	start: ( kiqApp, port ) => {
 		this.app = kiqApp;
-		return server.start(kiqApp, port);
-	},
-	
-	App: App,
 
-	configure: ( configureFn ) => {
+		_.forEach(ViewEngines, ( engine, name ) => {
+			kiqApp.registerViewEngine(name, engine);
+		});
+
+		return server.start(kiqApp, port);
+	}
+
+	configure( configureFn ) {
 		return configureFn({});
 	}
-};
+
+}
+
+module.exports = new Kiq();

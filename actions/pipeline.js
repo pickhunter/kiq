@@ -2,49 +2,45 @@ const Pipo = require('pipo');
 const Pug = require('pug');
 const Request = require('../helpers/request');
 const Response = require('../helpers/response');
+const Renderers = require('../helpers/renderers');
 
 
 class ActionPipeline extends Pipo {
 
-	constructor( route ) {
+	constructor( route, app ) {
 		super();
 		this._postActionPipeline = new Pipo();
 		this.route = route;
+		this.app = app;
+		this.renderers = Renderers.getFor(app);
 	}
 
 	addPostFilter( filter ) {
 		this._postActionPipeline.addFilter(filter);
 	}
 
-	reply( data ) {
-
-		var controllerName = this.route.controllerName;
-		var actionName = this.route.actionName;
+	send( data ) {
 
 		this.halt();
 
 		var format = this.request.format;
 
-		if( format == 'json' ) {
-			this.response.json(data);
-		} else {
-			this.response.send(Pug.renderFile(`views/${controllerName}/${actionName}.pug`, data));
-		}
+		this.renderers[format].render(this.response, data, this.route, this.request);
+		
+	}
+
+	reply( data ) {
+
+		this.send(data);
 
 		this._postActionPipeline.start();
 	}
 
-	error( payload ) {
-		this.halt();
-		this.response.status(500);
+	error( data ) {
+		var statusCode = /^5[0-9][0-9]/.test(this.response.statusCode) ? this.response.statusCode : 500;
+		this.response.status(statusCode);
 
-		var format = this.request.format;
-
-		if( format == 'json' ) {
-			this.response.json(payload);
-		} else {
-			this.response.send(Pug.renderFile(`views/error.pug`, payload));
-		}
+		this.send(data);
 	}
 
 	start( req, res, next ) {

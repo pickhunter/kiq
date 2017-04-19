@@ -58,11 +58,14 @@ module.exports = {
 							}),
 
 							Ensurers.directory.ensure(`${dirs.views}/${controllerName}`.toLowerCase()).then(() => {
-								Generators.view.generate(`${dirs.views}/${controllerName}/index.${templateExtension}`.toLowerCase(), {
+								Generators.view.action.generate(`${dirs.views}/${controllerName}/index.${templateExtension}`.toLowerCase(), {
 									controller: controllerName,
 									action: 'index'
 								});
 							}),
+
+							Generators.view['404'].generate(`${dirs.views}/404.${templateExtension}`.toLowerCase()),
+							Generators.view['500'].generate(`${dirs.views}/500.${templateExtension}`.toLowerCase()),
 
 							Generators.routes
 								.generate(`${dirs.config}/routes.js`, null)

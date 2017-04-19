@@ -1,0 +1,25 @@
+|doctype html
+|html
+|   head
+|     title kiq
+|     style(type="text/css").
+|       .kiq-page {
+|         margin: 100px 0 0 100px;
+|         font-family: 'Helvetica';
+|       }
+|       .kiq-page h1 {
+|         text-transform: uppercase;
+|       }
+|       pre {
+|          font-family: monospace;
+|       }
+|   body
+|     .kiq-page
+|       div
+|         pre
+|           span \#{request.method.toUpperCase()} \#{request.originalUrl}
+|           span &nbsp;
+|           span &nbsp;
+|           span \#{response.statusCode}
+|       h1(style='font-size: 6em;text-transform:uppercase')
+|         span 500

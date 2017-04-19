@@ -6,13 +6,15 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var Promise = require('bluebird');
 var Kiq = require('./index');
+const Request = require('./helpers/request');
+const Response = require('./helpers/response');
 
 global.Promise = Promise;
 
 var app = express();
 
 module.exports = {
-	bind: ( routes, binder ) => {
+	bind: ( routes, binder, kiqApp ) => {
 		// view engine setup
 		app.set('views', path.join(__dirname, 'views'));
 		app.set('view engine', 'pug');
@@ -25,13 +27,13 @@ module.exports = {
 		app.use(cookieParser());
 		app.use(express.static(path.join(__dirname, 'public')));
 
-		binder(app, routes);
+		binder(app, routes, kiqApp);
 
 		// catch 404 and forward to error handler
 		app.use(function(req, res, next) {
-		 var err = new Error('Not Found');
-		 err.status = 404;
-		 next(err);
+		  var err = new Error('Not Found');
+		  err.status = 404;
+		  next(err);
 		});
 
 		// error handlers
@@ -42,7 +44,12 @@ module.exports = {
 
 		 // render the error page
 		 res.status(err.status || 500);
-		 res.render('error');
+
+		 var request = new Request(req);
+		 var response = new Response(res);
+
+		 kiqApp.renderers[request.format].render(response, err, {}, request);
+
 		});
 
 		return app;

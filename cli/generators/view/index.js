@@ -1,13 +1,3 @@
-const FileGenerator = require('../file');
+const converter = require('../../../helpers/folder-to-module');
 
-module.exports = {
-	generate: ( writePath, scopeVars ) => {
-		return FileGenerator.generate(writePath, {
-			creationMessage: 'Created View',
-			template: {
-				path: `${__dirname}/template.pug`,
-				scope: scopeVars
-			}
-		});
-	}
-};
+module.exports = converter.toModule(__dirname);

@@ -31,7 +31,7 @@ class BaseController {
 		return this._afterActions;
 	}
 
-	getActionPipeline( route ) {
+	getActionPipeline( route, app ) {
 
 		var actionName = route.actionName;
 		var controllerName = route.controllerName;
@@ -52,7 +52,7 @@ class BaseController {
 			throw new Error(`Could not locate action by name '${actionName}'`);
 		}
 
-		var pipeline = new ActionPipeline(route);
+		var pipeline = new ActionPipeline(route, app);
 
 		this.preFilters
 			.filter(filter => filter.shouldRun(actionName))
