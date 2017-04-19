@@ -19,28 +19,28 @@ class ActionPipeline extends Pipo {
 		this._postActionPipeline.addFilter(filter);
 	}
 
-	send( data ) {
+	render( data, options ) {
+
+		options = Object.assign({}, options);
 
 		this.halt();
 
-		var format = this.request.format;
+		this.response.code = options.status || this.response.code;
 
+		var format = this.request.format;
 		this.renderers[format].render(this.response, data, this.route, this.request);
+
+		this._postActionPipeline.start();
 		
 	}
 
 	reply( data ) {
-
-		this.send(data);
-
-		this._postActionPipeline.start();
+		this.render(data);
 	}
 
 	error( data ) {
 		var statusCode = /^5[0-9][0-9]/.test(this.response.statusCode) ? this.response.statusCode : 500;
-		this.response.status(statusCode);
-
-		this.send(data);
+		this.render(data, { status: statusCode });
 	}
 
 	start( req, res, next ) {
@@ -51,7 +51,8 @@ class ActionPipeline extends Pipo {
 		super.start(this._getExternallyCallableFn('reply'),
 			this._getExternallyCallableFn('error'),
 			this.request,
-			this.response
+			this.response,
+			this._getExternallyCallableFn('render')
 		);
 	}
 

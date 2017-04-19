@@ -15,7 +15,7 @@ include ../../includes/info.pug
 | 
 |     // Before filters are called before reaching the action code
 |     // You can choose to 'reply' and halt the action pipeline like this
-|     // this.beforeAction(( reply, error, req, res ) => {
+|     // this.beforeAction(( reply, error, req, res, render ) => {
 |     //   reply({message: 'My before action'});
 |     // });
 | 
@@ -28,7 +28,7 @@ include ../../includes/info.pug
 |
 each action in actions
 	|
-	|   #{action}( reply, error, req, res ) {
+	|   #{action}( reply, error, req, res, render ) {
 	|
 	|     reply({
 	|       controller: '#{controller.name}',
