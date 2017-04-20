@@ -14,16 +14,24 @@ class Request {
 	}
 
 	get format() {
+		if( this._format ) {
+			return this._format;
+		}
+
 		if( this._req.params.format == 'json' || this._req.xhr && this.json ) {
 			return 'json';
 		} else if( this.html ) {
 			return 'html';
 		}
 	}
+
+	set format( format ) {
+		this._format = format;
+	}
 }
 
 var pRequest = Reflection.proxy(Request, {
-	private: ['_req'],
+	private: ['_req', '_format'],
 	delegate: {
 		methods: ['xhr', 'method', 'params', 'query', 'path', 'originalUrl'],
 		to: '_req'

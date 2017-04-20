@@ -89,29 +89,34 @@ class KiqApp {
 
 	_registerRearMiddlewares( expressApp ) {
 		// catch 404 and forward to error handler
-		expressApp.use(function(req, res, next) {
+		expressApp.all('/[^.]+(.:format)?/', function(req, res, next) {
 		  var err = new Error('Not Found');
 		  err.status = 404;
-		  next(err);
+		  next({
+		  	format: req.params.format,
+		  	status: err.status,
+		  	error: err
+		  });
 		});
 
 		// error handlers
 		expressApp.use(( err, req, res, next ) => {
-		 // set locals, only providing error in development
-		 res.locals.message = err.message;
-		 res.locals.error = req.app.get('env') === 'development' ? err : {};
+		  // set locals, only providing error in development
+		  res.locals.message = err.message;
+		  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-		 // render the error page
-		 res.status(err.status || 500);
+		  // render the error page
+		  debugger
+		  res.status(err.status || 500);
 
-		 var request = new Request(req);
-		 var response = new Response(res);
+		  var request = new Request(req);
+		  var response = new Response(res);
 
-		 this.renderers[request.format].render(err, {
-		 	response: response,
-		 	route: {},
-		 	request: request 
-		 });
+		  this.renderers[err.format].render(err.error, {
+		  	response: response,
+		  	route: {},
+		  	request: request 
+		  });
 
 		});
 	}
