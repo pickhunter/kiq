@@ -3,8 +3,7 @@
 include ../../includes/info.pug
 
 |const #{packageName} = require('#{package.name}');
-|const config = require('./config');
 |
-|var app = new #{packageName}.App(config);
+|var app = new #{packageName}.App();
 |
 |module.exports = app;
