@@ -112,7 +112,7 @@ class KiqApp {
 		  var request = new Request(req);
 		  var response = new Response(res);
 
-		  this.renderers[err.format].render(err.error, {
+		  this.renderers[err.format || request.format].render(err.error, {
 		  	response: response,
 		  	route: {},
 		  	request: request 
