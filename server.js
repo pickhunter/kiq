@@ -4,10 +4,15 @@
 var debug = require('debug')(`kiq:server`);
 var http = require('http');
 var _ = require('lodash');
+var Branding = require('./helpers/branding');
 var server;
+
+var chalk = require('chalk');
 
 module.exports = {
   start: ( kiqApp, port ) => {
+
+    Branding.show();
     
     var config = kiqApp.config;
     var port = port || config.port;

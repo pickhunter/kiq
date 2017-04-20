@@ -10,7 +10,7 @@ module.exports = {
 			.option('-p <port>, --port <port>', 'Port Number', program.INT)
 			.action(function( args, options, logger ) {
 				Ensurers.app.ensure().then(() => {
-					shell.exec(`node server ${options.port || 5000}`);
+					shell.exec(`FORCE_COLOR=1 node server ${options.port || 5000}`);
 				});
 			});
 	}
