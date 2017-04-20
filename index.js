@@ -1,5 +1,5 @@
 const dirToModuleConverter = require('./helpers/folder-to-module');
-const server = require('./server');
+const server = require('./helpers/server');
 
 const _ = require('lodash');
 
@@ -31,4 +31,6 @@ class Kiq {
 
 }
 
-module.exports = new Kiq();
+global.Kiq = new Kiq();
+
+module.exports = global.Kiq;

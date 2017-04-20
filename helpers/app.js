@@ -9,6 +9,9 @@ const Router = require('../routing/router');
 const path = require('path');
 const _ = require('lodash');
 const DirToModule = require('./folder-to-module');
+const Request = require('./request');
+const Response = require('./response');
+const Renderers = require('./renderers');
 
 class KiqApp {
 	constructor( config ) {
@@ -17,6 +20,7 @@ class KiqApp {
 		Object.assign(this, appConfig, config);
 
 		this.expressApp = express();
+		this.router = new Router();
 		this._registerFrontMiddlewares(this.expressApp);
 		this._kiqify(this.expressApp, this.routes);
 		this._registerRearMiddlewares(this.expressApp);
@@ -54,9 +58,9 @@ class KiqApp {
 			throw new Error('Express app missing');
 		}
 
-		Router.configureWith(routes);
+		this.router.configureWith(routes);
 
-		_.flatten(_.map(Router.config, 'routes')).forEach(route => {
+		_.flatten(_.map(this.router.config, 'routes')).forEach(route => {
 			expressApp[route.method](`${route.path}(.:format)?`, ( req, res, next ) => {
 				try{
 					route.controller
@@ -95,7 +99,7 @@ class KiqApp {
 		expressApp.use(( err, req, res, next ) => {
 		 // set locals, only providing error in development
 		 res.locals.message = err.message;
-		 res.locals.error = req.expressApp.get('env') === 'development' ? err : {};
+		 res.locals.error = req.app.get('env') === 'development' ? err : {};
 
 		 // render the error page
 		 res.status(err.status || 500);

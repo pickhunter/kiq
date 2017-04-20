@@ -4,7 +4,7 @@
 var debug = require('debug')(`kiq:server`);
 var http = require('http');
 var _ = require('lodash');
-var Branding = require('./helpers/branding');
+var Branding = require('./branding');
 var server;
 
 var chalk = require('chalk');
