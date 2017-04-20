@@ -20,7 +20,7 @@ module.exports = {
 			`;
 
 		kiq.split('\n').forEach((line, index) => {
-			console.log(chalk[colors[index % colors.length]](line));
+			console.log(chalk.bold[colors[index % colors.length]](line));
 		});
 	}
 };
