@@ -30,7 +30,13 @@ module.exports = {
 					public: `${appRootDir}/public`,
 					javascripts: `${appRootDir}/public/javascripts`,
 					stylesheets: `${appRootDir}/public/stylesheets`,
-					images: `${appRootDir}/public/images`
+					images: `${appRootDir}/public/images`,
+					initializers: `${appRootDir}/init`,
+					initDev: `${appRootDir}/init/development`,
+					initProd: `${appRootDir}/init/production`,
+					initTest: `${appRootDir}/init/testing`,
+					initStaging: `${appRootDir}/init/staging`,
+					initGlobal: `${appRootDir}/init/global`
 				};
 
 				Bluebird.all(_.map(dirs, dir => Ensurers.directory.ensure(dir)))

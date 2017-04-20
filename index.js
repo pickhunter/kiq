@@ -18,9 +18,9 @@ class Kiq {
 
 		this.app = kiqApp;
 
-		_.forEach(ViewEngines, ( engine, name ) => {
-			kiqApp.registerViewEngine(name, engine);
-		});
+		_.forEach(ViewEngines, kiqApp.registerViewEngine.bind(kiqApp));
+
+		kiqApp.runInitializers();
 
 		return server.start(kiqApp, port);
 	}
