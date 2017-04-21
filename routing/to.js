@@ -19,7 +19,12 @@ class To {
 
 	_assignAction( actionName ) {
 		this.actionName = actionName;
-		this._action = this._loadAction(actionName);
+		try {
+			this._action = this._loadAction(actionName);
+		} catch( e ) {
+
+		}
+		
 	}
 
 	_loadAction( actionName ) {
@@ -28,7 +33,12 @@ class To {
 
 	_assignController( controllerName ) {
 		this.controllerName = controllerName;
-		this._controller = this._loadController(controllerName);
+		try {
+			this._controller = this._loadController(controllerName);
+		} catch( e ){
+
+		}
+		
 	}
 
 	_loadController( controllerName ) {

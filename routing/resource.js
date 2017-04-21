@@ -1,8 +1,9 @@
-var lodash = require('lodash');
+var _ = require('lodash');
 var Route = require('./route');
 
 class Resource {
 	constructor( name, options ) {
+		this._resourceActions = ['index', 'show', 'create', 'update', 'destroy'];
 		this._routes = [];
 		options = this._normalizeResourceOptions(name, options);
 
@@ -10,16 +11,33 @@ class Resource {
 
 		this.name = name;
 
-		var exposedActions = this._filteredActionList({
-			allowed: options.allow,
-			blocked: options.block
-		});
-
-		this._populateRoutes(exposedActions);
+		this.allow(options.allow);
+		this.block(options.block);
 
 	}
 
-	_populateRoutes( exposedActions ) {
+	_findRoute( action ) {
+		var routeBlueprint = this._translateActionToRouteConfig({ action });
+		return _.find(this._routes, routeBlueprint);
+	}
+
+	allow(allowed) {
+		if( allowed && allowed.length ) {
+			this.clear();
+
+			this._addRoutes(_.flatten([allowed]));
+		}
+		return this;
+	}
+
+	block(blocked) {
+		var blocked = _.flatten([blocked]);
+		var allowed = _.without(this._resourceActions, ...blocked);
+
+		return this.allow(allowed);
+	}
+
+	_addRoutes( exposedActions ) {
 		this._routes.push.apply(this._routes, exposedActions.map(( action ) => {
 			var routeConfig = this._translateActionToRouteConfig({
 				action: action,
@@ -34,9 +52,9 @@ class Resource {
 	}
 
 	_filteredActionList(options) {
-		var allowed = options.allowed || ['index', 'show', 'create', 'update', 'destroy'];
+		var allowed = options.allowed || this._resourceActions;
 		if( options.blocked && options.blocked.length ) {
-			allowed = lodash.without(allowed, options.blocked);
+			allowed = _.without(allowed, options.blocked);
 		}
 
 		return allowed;
@@ -69,11 +87,19 @@ class Resource {
 
 	}
 
+	clear() {
+		this._routes = [];
+	}
+
 	_translateActionToRouteConfig( args ) {
-		return lodash.clone({
+		args = Object.assign({
+			path: this.path,
+			resourceName: this.name
+		}, args)
+		return _.clone({
 			index: {
 				method: 'get',
-				path: `/${args.path}/`
+				path: `/${args.path}`
 			},
 
 			show:  {
@@ -83,7 +109,7 @@ class Resource {
 
 			create: {
 				method: 'post',
-				path: `/${args.path}/`
+				path: `/${args.path}`
 			},
 
 			update: {

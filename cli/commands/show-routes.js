@@ -3,6 +3,7 @@ const paths = require('../../helpers/paths');
 const _ = require('lodash');
 const shell = require('shelljs');
 const Ensurers = require('../ensurers');
+const Router = require('../../routing/router');
 
 module.exports = {
 	bind: (program) => {
@@ -10,7 +11,7 @@ module.exports = {
 			.command('routes', `Show existing routes for this application`)
 			.action(function( args, options, logger ) {
 				Ensurers.app.ensure().then(() => {
-					var router = require('../../routing/router');
+					var router = new Router();
 					var currentFolderPath = paths.getCurrentWorkingDirectory();
 					
 					router.configureWith(require(`${currentFolderPath}/config/routes`));

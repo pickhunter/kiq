@@ -7,11 +7,9 @@ var Reflection = require('../helpers/reflection');
 
 class Route {
 	constructor( method, path ) {
-		path = this._normalizePath(path);
-		Object.assign(this, {
-			method: 'get',
-			path: '/'
-		}, { method, path });
+		this.path = path || '/';
+		this.method = method || 'get';
+		this.path = this._normalizePath(this.path);
 	}
 
 	_normalizePath( path ) {
