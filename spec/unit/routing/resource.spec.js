@@ -93,3 +93,35 @@ describe('Resource trimming', () => {
 		expect(resource.routes.length).toEqual(4);
 	});
 });
+
+describe('Resource constructor', () => {
+
+	it('should allow the routes specified in \'allow\'', () => {
+		var resource = new Resource('rohit', {
+			allow: ['show', 'index']
+		});
+
+		var routes = resource.routes;
+
+		expect(routes.length).toEqual(2);
+		expect(_.find(routes, {method: 'get', path: '/rohits'})).toBeDefined();
+		expect(_.find(routes, {method: 'get', path: '/rohits/:rohitId'})).toBeDefined();
+	});
+
+
+	it('should block the routes specified in \'block\'', () => {
+		var resource = new Resource('rohit', {
+			block: ['show', 'index']
+		});
+
+		var routes = resource.routes;
+
+		expect(routes.length).toEqual(3);
+		expect(_.find(routes, {method: 'get', path: '/rohits'})).not.toBeDefined();
+		expect(_.find(routes, {method: 'get', path: '/rohits/:rohitId'})).not.toBeDefined();
+
+		expect(_.find(routes, {method: 'post', path: '/rohits'})).toBeDefined();
+		expect(_.find(routes, {method: 'put', path: '/rohits/:rohitId'})).toBeDefined();
+		expect(_.find(routes, {method: 'delete', path: '/rohits/:rohitId'})).toBeDefined();
+	});
+});

@@ -7,9 +7,11 @@ class Resource {
 		this._routes = [];
 		options = this._normalizeResourceOptions(name, options);
 
-		Object.assign(this, options);
+		Object.assign(this, _.pick(options, ['name', 'path', 'controller']));
 
 		this.name = name;
+
+		this.allow(this._resourceActions);
 
 		this.allow(options.allow);
 		this.block(options.block);
@@ -21,7 +23,7 @@ class Resource {
 		return _.find(this._routes, routeBlueprint);
 	}
 
-	allow(allowed) {
+	allow( allowed ) {
 		if( allowed && allowed.length ) {
 			this.clear();
 
@@ -30,11 +32,15 @@ class Resource {
 		return this;
 	}
 
-	block(blocked) {
-		var blocked = _.flatten([blocked]);
-		var allowed = _.without(this._resourceActions, ...blocked);
+	block( blocked ) {
+		if( blocked && blocked.length ) {
+			var blocked = _.flatten([blocked]);
+			var allowed = _.without(this._resourceActions, ...blocked);
 
-		return this.allow(allowed);
+			return this.allow(allowed);
+		}
+
+		return this;
 	}
 
 	_addRoutes( exposedActions ) {
