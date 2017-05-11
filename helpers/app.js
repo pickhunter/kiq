@@ -62,15 +62,28 @@ class KiqApp {
 
 		_.flatten(_.map(this.router.config, 'routes')).forEach(route => {
 			expressApp[route.method](`${route.path}(.:format)?`, ( req, res, next ) => {
-				try{
-					route.controller
-						.getActionPipeline(route, this)
-						.start(req, res, next);
+
+				try {
+
+					var request = new Request(req);
+					
+					var response = new Response(res);
+					response.code = route.expectedCode;
+					
+					var context = { request, response };
+
+					var pipeline = route.controller.getActionPipeline(route, this);
+					pipeline.context = context;
+					
+					pipeline.start();
+
 				}
 
 				catch(e) {
+
 					console.error(e);
 					throw(e);
+
 				}
 				
 			});
@@ -106,7 +119,6 @@ class KiqApp {
 		  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
 		  // render the error page
-		  debugger
 		  res.status(err.status || 500);
 
 		  var request = new Request(req);

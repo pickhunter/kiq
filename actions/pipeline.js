@@ -1,7 +1,5 @@
 const Pipo = require('pipo');
 const Pug = require('pug');
-const Request = require('../helpers/request');
-const Response = require('../helpers/response');
 const Renderers = require('../helpers/renderers');
 
 
@@ -13,9 +11,14 @@ class ActionPipeline extends Pipo {
 		this.route = route;
 		this.app = app;
 		this.renderers = Renderers.getFor(app);
+
+		this.reply = this.render;
 	}
 
 	set context( context ) {
+		context.reply = this.reply.bind(this);
+		context.render = this.render.bind(this);
+		context.error = this.error.bind(this);
 		super.context = context;
 		this._postActionPipeline.context = context;
 	}
@@ -30,13 +33,13 @@ class ActionPipeline extends Pipo {
 
 		this.halt();
 
-		this.response.code = options.status || this.response.code;
+		this._context.response.code = options.status || this._context.response.code;
 
-		var format = this.request.format;
+		var format = this._context.request.format;
 		this.renderers[format].render(data, {
-			response: this.response,
+			response: this._context.response,
 			route: this.route,
-			request: this.request,
+			request: this._context.request,
 			template: options.template
 		});
 
@@ -44,28 +47,15 @@ class ActionPipeline extends Pipo {
 		
 	}
 
-	reply( data ) {
-		this.render(data);
-	}
-
 	error( data ) {
-		var statusCode = /^5[0-9][0-9]/.test(this.response.statusCode) ? this.response.statusCode : 500;
+		var statusCode = /^5[0-9][0-9]/.test(this._context.response.statusCode) ? this._context.response.statusCode : 500;
 		this.render(data, { status: statusCode });
 	}
 
-	start( req, res, next ) {
-		this.request = new Request(req);
-		this.response = new Response(res);
-		this.response.code = this.route.expectedCode;
-		this.next = next;
-
-		super.start(this.reply.bind(this),
-			this.error.bind(this),
-			this.request,
-			this.response,
-			this.render.bind(this)
-		);
+	start() {
+		super.start(this.reply.bind(this), this.error.bind(this));
 	}
+
 }
 
 module.exports = ActionPipeline;

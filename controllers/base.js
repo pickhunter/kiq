@@ -53,7 +53,7 @@ class BaseController {
 		}
 
 		var pipeline = new ActionPipeline(route, app);
-		pipeline.context = {};
+		// pipeline.context = {};
 
 		this.preFilters
 			.filter(filter => filter.shouldRun(actionName))
