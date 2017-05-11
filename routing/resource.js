@@ -51,7 +51,9 @@ class Resource {
 				path: this.path
 			});
 
-			return new Route(routeConfig.method, routeConfig.path).to(`${this.controller}->${action}`);
+			return new Route(routeConfig.method, routeConfig.path)
+				.to(`${this.controller}->${action}`)
+				.expectCode(routeConfig.expectedStatus);
 		}));
 
 		return this._routes;
@@ -98,34 +100,41 @@ class Resource {
 	}
 
 	_translateActionToRouteConfig( args ) {
+		
 		args = Object.assign({
 			path: this.path,
 			resourceName: this.name
-		}, args)
+		}, args);
+
 		return _.clone({
 			index: {
 				method: 'get',
-				path: `/${args.path}`
+				path: `/${args.path}`,
+				expectedStatus: 200
 			},
 
 			show:  {
 				method: 'get',
-				path: `/${args.path}/:${args.resourceName}Id`
+				path: `/${args.path}/:${args.resourceName}Id`,
+				expectedStatus: 200
 			},
 
 			create: {
 				method: 'post',
-				path: `/${args.path}`
+				path: `/${args.path}`,
+				expectedStatus: 201
 			},
 
 			update: {
 				method: 'put',
-				path: `/${args.path}/:${args.resourceName}Id`
+				path: `/${args.path}/:${args.resourceName}Id`,
+				expectedStatus: 200
 			},
 
 			destroy: {
 				method: 'delete',
-				path: `/${args.path}/:${args.resourceName}Id`
+				path: `/${args.path}/:${args.resourceName}Id`,
+				expectedStatus: 200
 			}
 		}[args.action]);
 	}

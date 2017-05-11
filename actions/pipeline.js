@@ -56,6 +56,7 @@ class ActionPipeline extends Pipo {
 	start( req, res, next ) {
 		this.request = new Request(req);
 		this.response = new Response(res);
+		this.response.code = this.route.expectedCode;
 		this.next = next;
 
 		super.start(this.reply.bind(this),

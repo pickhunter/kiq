@@ -10,6 +10,7 @@ class Route {
 		this.path = path || '/';
 		this.method = method || 'get';
 		this.path = this._normalizePath(this.path);
+		this.expectCode(200);
 	}
 
 	_normalizePath( path ) {
@@ -43,6 +44,15 @@ class Route {
 
 	get routes() {
 		return [this];
+	}
+
+	get expectedCode() {
+		return this._expectedCode;
+	}
+
+	expectCode(code) {
+		this._expectedCode = code;
+		return this;
 	}
 
 	inspect() {
