@@ -24,18 +24,18 @@ include ../../includes/info.pug
 |
 each action in actions
 	|
-	|   #{action}( reply, error, req, res, render ) {
+	|   #{action}( reply, error ) {
 	|
 	|     reply({
 	|       controller: '#{controller.name}',
 	|       action: '#{action}',
-	|       params: Object.assign({}, req.params, req.query)
+	|       params: Object.assign({}, this.request.params, this.request.query)
 	|     });
 	|
 	|   }
 	|
 |
-|   preIntent( reply, error, req, res, render ) {
+|   preIntent( reply, error ) {
 |   	reply({message: 'My before action'});
 |   }
 |
