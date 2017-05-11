@@ -15,14 +15,10 @@ include ../../includes/info.pug
 | 
 |     // Before filters are called before reaching the action code
 |     // You can choose to 'reply' and halt the action pipeline like this
-|     // this.beforeAction(( reply, error, req, res, render ) => {
-|     //   reply({message: 'My before action'});
-|     // });
+|     // this.beforeAction(this.preIntent);
 | 
 |     // Use an after filter to do something post action
-|     // this.afterAction(() => {
-|     //   console.log({message: 'My after action'});
-|     // });
+|     // this.afterAction(this.postIntent);
 |
 |   }
 |
@@ -38,6 +34,14 @@ each action in actions
 	|
 	|   }
 	|
+|
+|   preIntent( reply, error, req, res, render ) {
+|   	reply({message: 'My before action'});
+|   }
+|
+|   postIntent() {
+|     console.log({message: 'My after action'});
+|   }
 |
 |}
 |

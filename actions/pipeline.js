@@ -15,6 +15,11 @@ class ActionPipeline extends Pipo {
 		this.renderers = Renderers.getFor(app);
 	}
 
+	set context( context ) {
+		super.context = context;
+		this._postActionPipeline.context = context;
+	}
+
 	addPostFilter( filter ) {
 		this._postActionPipeline.addFilter(filter);
 	}
@@ -53,19 +58,12 @@ class ActionPipeline extends Pipo {
 		this.response = new Response(res);
 		this.next = next;
 
-		super.start(this._getExternallyCallableFn('reply'),
-			this._getExternallyCallableFn('error'),
+		super.start(this.reply.bind(this),
+			this.error.bind(this),
 			this.request,
 			this.response,
-			this._getExternallyCallableFn('render')
+			this.render.bind(this)
 		);
-	}
-
-	_getExternallyCallableFn( fnName ) {
-		var self = this;
-		return function(){
-			self[fnName].apply(self, arguments);
-		}
 	}
 }
 
