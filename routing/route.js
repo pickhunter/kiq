@@ -21,6 +21,10 @@ class Route {
 		return `/${path}`;
 	}
 
+	makeController() {
+		return this._to._loadController(this._to.controllerName);
+	}
+
 	to(config) {
 		this._to = new To(config);
 		return this;

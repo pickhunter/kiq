@@ -1,8 +1,6 @@
 var ActionPipeline = require('../actions/pipeline');
 var Filter = require('../actions/filter');
 
-var pug = require('pug');
-
 class BaseController {
 
 	constructor() {
@@ -53,7 +51,7 @@ class BaseController {
 		}
 
 		var pipeline = new ActionPipeline(route, app);
-		// pipeline.context = {};
+		pipeline.context = this;
 
 		this.preFilters
 			.filter(filter => filter.shouldRun(actionName))

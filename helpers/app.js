@@ -9,9 +9,9 @@ const Router = require('../routing/router');
 const path = require('path');
 const _ = require('lodash');
 const DirToModule = require('./folder-to-module');
+const Renderers = require('./renderers');
 const Request = require('./request');
 const Response = require('./response');
-const Renderers = require('./renderers');
 
 class KiqApp {
 	constructor( config ) {
@@ -65,15 +65,14 @@ class KiqApp {
 
 				try {
 
-					var request = new Request(req);
-					
-					var response = new Response(res);
-					response.code = route.expectedCode;
-					
-					var context = { request, response };
+					var controller = route.makeController();
 
-					var pipeline = route.controller.getActionPipeline(route, this);
-					pipeline.context = context;
+					controller.request = new Request(req);
+					
+					controller.response = new Response(res);
+					controller.response.code = route.expectedCode;
+
+					var pipeline = controller.getActionPipeline(route, this);
 					
 					pipeline.start();
 
@@ -127,7 +126,7 @@ class KiqApp {
 		  this.renderers[err.format || request.format].render(err.error, {
 		  	response: response,
 		  	route: {},
-		  	request: request 
+		  	request: request
 		  });
 
 		});
